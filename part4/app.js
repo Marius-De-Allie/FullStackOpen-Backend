@@ -1,4 +1,3 @@
-
 // Mongoose
 const mongoose = require('mongoose')
 
@@ -11,6 +10,9 @@ const blogsRouter = require('./controllers/blogs')
 // EXPRESS
 const express = require('express')
 const app = express();
+
+// body-parser
+const bodyParser = require('body-parser')
 
 // dotenv
 const config = require('./utils/config')
@@ -25,7 +27,8 @@ mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology
     .catch(e => {
         logger.error('UNABLE TO CONNECT TO DB', e.message)
     })
-    
+
+app.use(bodyParser.json())
     
 // Use router.
 app.use('/api/blogs', blogsRouter)
