@@ -15,13 +15,24 @@ const app = express();
 // dotenv
 const config = require('dotenv').config()
 
-mongoose.connect(config.process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+// model
+const Blog = require('./models/blogs')
+
+mongoose.connect('mongodb+srv://fullstack:Fullstack@cluster0-ml26d.mongodb.net/bloglist?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
+.then(() => {
+        console.log('CONNECTED TO DB')
+    })
+    .catch(e => {
+        console.log('NOT CONNECTED TO DB')
+        
+    })
+    
+    
+// Use router.
+app.use('/api', blogsRouter)
 
 // use cors
 app.use(cors)
-
-// Use router.
-app.use('/api/blogs', blogsRouter)
 
 module.exports = app
 
