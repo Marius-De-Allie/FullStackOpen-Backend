@@ -13,23 +13,22 @@ const express = require('express')
 const app = express();
 
 // dotenv
-const config = require('dotenv').config()
+const config = require('./utils/config')
 
-// model
-const Blog = require('./models/blogs')
+// logger
+const logger  = require('./utils/logger')
 
-mongoose.connect('mongodb+srv://fullstack:Fullstack@cluster0-ml26d.mongodb.net/bloglist?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => {
-        console.log('CONNECTED TO DB')
+        logger.info('CONNECTED TO DB')
     })
     .catch(e => {
-        console.log('NOT CONNECTED TO DB')
-        
+        logger.error('UNABLE TO CONNECT TO DB', e.message)
     })
     
     
 // Use router.
-app.use('/api', blogsRouter)
+app.use('/api/blogs', blogsRouter)
 
 // use cors
 app.use(cors)
