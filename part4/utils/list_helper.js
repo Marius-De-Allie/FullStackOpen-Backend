@@ -12,7 +12,26 @@ const totalLikes = blogs => {
     // return total;
 }
 
+const favouriteBlog = blogs => {
+    let mostLiked = {likes: 0};
+
+    blogs.map(blog => {
+        if(blog.likes >= mostLiked.likes) {
+            mostLiked = {
+                title: blog.title,
+                author: blog.author,
+                likes: blog.likes
+            }
+        } else {
+            // do nothing
+        }
+    })
+
+    return mostLiked.likes ===  0 ? undefined : mostLiked;
+}
+
 module.exports = {
     dummy,
-    totalLikes
+    totalLikes,
+    favouriteBlog
 }
