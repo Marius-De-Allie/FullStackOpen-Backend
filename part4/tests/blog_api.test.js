@@ -40,6 +40,25 @@ describe('blog api', () => {
         const item = response.body[0];
         expect(item.id).toBeDefined()
     })
+
+    test('a new blog can be added', async () => {
+
+        const newBlog = {
+            title: 'Other Blog',
+            author: 'Mr. Author',
+            url: 'https://www.myurl.com',
+            likes: 6
+        }
+
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+
+        const response = await api.get('/api/blogs')
+        expect(response.body).toHaveLength(initialBlogs.length + 1)
+    })
     
     
     afterAll(() => {
