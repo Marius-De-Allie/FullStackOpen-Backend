@@ -9,6 +9,7 @@ const blogsRouter = require('./controllers/blogs')
 
 // EXPRESS
 const express = require('express')
+require('express-async-errors')
 const app = express();
 
 // body-parser
