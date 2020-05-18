@@ -28,14 +28,21 @@ beforeEach(async () => {
     await Promise.all(promiseArray)
 })
 
+describe('blog api', () => {
+    test('returns blogs as json and returns correct number of blogs', async () => {
+        const response = await api.get('/api/blogs')
+        expect(response.body).toHaveLength(initialBlogs.length)
+        expect(response.headers['content-type']).toContain('application/json')
+    })
+
+    test('each blog returns id property', async () => {
+        const response = await api.get('/api/blogs')
+        const item = response.body[0];
+        expect(item.id).toBeDefined()
+    })
     
-test('blogs api returns blogs as json and returns correct number of blogs', async () => {
-    const response = await api.get('/api/blogs')
-    expect(response.body).toHaveLength(initialBlogs.length)
-    expect(response.headers['content-type']).toContain('application/json')
-})
-
-
-afterAll(() => {
-    mongoose.connection.close()
-});
+    
+    afterAll(() => {
+        mongoose.connection.close()
+    });
+});    
