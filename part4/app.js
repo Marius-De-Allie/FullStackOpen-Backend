@@ -21,6 +21,8 @@ const config = require('./utils/config')
 // logger
 const logger  = require('./utils/logger')
 
+const middleware = require('./utils/middleware')
+
 mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => {
         logger.info('CONNECTED TO DB')
@@ -36,6 +38,10 @@ app.use('/api/blogs', blogsRouter)
 
 // use cors
 app.use(cors)
+
+// app.use(middleware.requestLogger)
+// app.use(middleware.unknownEndpoint)
+app.use(middleware.errorHandler)
 
 module.exports = app
 

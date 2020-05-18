@@ -77,6 +77,19 @@ describe('blog api', () => {
         const addedBlog = response.body.filter(blog => blog.title === newBlog.title)
         expect(addedBlog[0].likes).toBe(0)
     })
+
+    test('a new blog is missing the title and url properties, return response status code 400', async () => {
+    
+        const newBlog = {
+            author: 'Jay Toms',
+            likes: 20
+        }
+
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(400)
+    })
     
     
     afterAll(() => {
