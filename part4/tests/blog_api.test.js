@@ -90,6 +90,25 @@ describe('blog api', () => {
             .send(newBlog)
             .expect(400)
     })
+
+    test('a blog with a valid id is removed from blogs', async () => {
+        const  response = await api.get('/api/blogs');
+        const blogsAtStart = response.body;
+        const id = blogsAtStart[0].id
+
+        await api
+            .delete(`/api/blogs/${id}`)
+            expect(204)
+
+        const res = await api.get('/api/blogs/');
+        const blogsAtEnd = res.body;
+
+        expect(blogsAtEnd).toHaveLength(blogsAtStart.length -1)
+
+        const ids = blogsAtEnd.map(blog => blog.id);
+        
+        expect(ids).not.toContain(id)
+    })
     
     
     afterAll(() => {
