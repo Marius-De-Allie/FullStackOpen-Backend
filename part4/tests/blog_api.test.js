@@ -59,6 +59,24 @@ describe('blog api', () => {
         const response = await api.get('/api/blogs')
         expect(response.body).toHaveLength(initialBlogs.length + 1)
     })
+
+    test('a new blog is missing the likes property, add likes default value of 0', async () => {
+    
+        const newBlog = {
+            title: 'Great Blog',
+            author: 'Author Reed',
+            url: 'https://www.greatblog.com',
+        }
+
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+
+        const response = await api.get('/api/blogs')
+
+        const addedBlog = response.body.filter(blog => blog.title === newBlog.title)
+        expect(addedBlog[0].likes).toBe(0)
+    })
     
     
     afterAll(() => {
