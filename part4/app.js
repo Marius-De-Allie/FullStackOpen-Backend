@@ -7,6 +7,7 @@ const cors = require('cors')
 // Router
 const blogsRouter = require('./controllers/blogs')
 const usersRouter = require('./controllers/users')
+const loginRouter = require('./controllers/login')
 
 // EXPRESS
 const express = require('express')
@@ -37,6 +38,7 @@ app.use(bodyParser.json())
 // Use router.
 app.use('/api/blogs', blogsRouter)
 app.use('/api/users', usersRouter)
+app.use('/api/login', loginRouter)
 
 // use cors
 app.use(cors)
