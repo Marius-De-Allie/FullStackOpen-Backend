@@ -19,7 +19,6 @@ blogsRouter.get('/',  async (request, response) => {
 blogsRouter.post('/', async (request, response, next) => {
     const body = request.body;
     let token = getTokenFrom(request)
-    // token.split(' ')[1];
     const decodedToken = jwt.verify(token, process.env.SECRET)
     if (!token || !decodedToken.id) {
         return response.status(401).json({error: 'token missing or invalid'})
@@ -48,12 +47,25 @@ blogsRouter.post('/', async (request, response, next) => {
 });
 
 blogsRouter.delete('/:id', async (request, response, next) => {
-    const {id} = request.params;
-    try {
-        const result = await Blog.findByIdAndRemove(id)
-        response.status(204).end()
-    } catch(exception) {
-        next(exception)
+    let {id} = request.params;
+    let token = getTokenFrom(request)
+    const decodedToken = jwt.verify(token, process.env.SECRET)
+    console.log(decodedToken) 
+    if (!token || !decodedToken.id) {
+        return response.status(401).json({error: 'token missing or invalid'})
+    }
+
+    const user = await User.findById(decodedToken.id)
+    const selBlog = await Blog.find({_id: request.params.id});
+    if(selBlog[0].user.toString() === user._id.toString()) {
+        try {
+            const result = await Blog.findByIdAndRemove(id)
+            response.status(204).end()
+        } catch(exception) {
+            next(exception)
+        }
+    } else {
+        return response.status(401).json({error: 'Not authorized to delete this item'});
     }
 });
 
