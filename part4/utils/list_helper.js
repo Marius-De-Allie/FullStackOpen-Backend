@@ -30,8 +30,27 @@ const favouriteBlog = blogs => {
     return mostLiked.likes ===  0 ? undefined : mostLiked;
 }
 
+const mostLikes = blogs => {
+    let author;
+    let mostLikes = 0;
+
+    blogs.forEach(blog => {
+        if(blog.likes >= mostLikes) {
+            author = blog.author,
+            mostLikes = blog.likes
+        } else {
+            // Do nothing.
+        }
+    });
+    return {
+        author,
+        likes: mostLikes
+    }
+};
+
 module.exports = {
     dummy,
     totalLikes,
-    favouriteBlog
+    favouriteBlog,
+    mostLikes
 }
